@@ -1,8 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const { createServer } = require('http');
-const app = express();
+import express          from 'express';
+import mongoose         from 'mongoose';
+import { createServer } from 'http';
+import bodyParser       from 'body-parser';
 
+const app = express();  
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 mongoose.connect('mongodb+srv://Gegham:g13131213@cluster0.8hk1c.mongodb.net/firstMongo?retryWrites=true&w=majority',
     {
@@ -27,8 +31,8 @@ const Users = mongoose.model('Users', UsersSchema);
 
 app.post('/', (req, res) => {
     Users.create({
-        name: name,
-        age: age
+        name: req.body.name,
+        age: req.body.age
     })
         .then((user) => res.send(user))
         .catch(err => res.send(err));
